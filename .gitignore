@@ -1,5 +1,4 @@
 *.rej
 *.orig
-*.patch
 out/
 toolchain/

@@ -1,0 +1,118 @@
+			The Frame Buffer Device API
+			---------------------------
+
+Last revised: June 21, 2011
+
+
+0. Introduction
+---------------
+
+This document describes the frame buffer API used by applications to interact
+with frame buffer devices. In-kernel APIs between device drivers and the frame
+buffer core are not described.
+
+Due to a lack of documentation in the original frame buffer API, drivers
+behaviours differ in subtle (and not so subtle) ways. This document describes
+the recommended API implementation, but applications should be prepared to
+deal with different behaviours.
+
+
+1. Capabilities
+---------------
+
+Device and driver capabilities are reported in the fixed screen information
+capabilities field.
+
+struct fb_fix_screeninfo {
+	...
+	__u16 capabilities;		/* see FB_CAP_*			*/
+	...
+};
+
+Application should use those capabilities to find out what features they can
+expect from the device and driver.
+
+- FB_CAP_FOURCC
+
+The driver supports the four character code (FOURCC) based format setting API.
+When supported, formats are configured using a FOURCC instead of manually
+specifying color components layout.
+
+
+2. Types and visuals
+--------------------
+
+Pixels are stored in memory in hardware-dependent formats. Applications need
+to be aware of the pixel storage format in order to write image data to the
+frame buffer memory in the format expected by the hardware.
+
+Formats are described by frame buffer types and visuals. Some visuals require
+additional information, which are stored in the variable screen information
+bits_per_pixel, grayscale, red, green, blue and transp fields.
+
+Visuals describe how color information is encoded and assembled to create
+macropixels. Types describe how macropixels are stored in memory. The following
+types and visuals are supported.
+
+- FB_TYPE_PACKED_PIXELS
+
+Macropixels are stored contiguously in a single plane. If the number of bits
+per macropixel is not a multiple of 8, whether macropixels are padded to the
+next multiple of 8 bits or packed together into bytes depends on the visual.
+
+Padding at end of lines may be present and is then reported through the fixed
+screen information line_length field.
+
+- FB_TYPE_PLANES
+
+Macropixels are split across multiple planes. The number of planes is equal to
+the number of bits per macropixel, with plane i'th storing i'th bit from all
+macropixels.
+
+Planes are located contiguously in memory.
+
+- FB_TYPE_INTERLEAVED_PLANES
+
+Macropixels are split across multiple planes. The number of planes is equal to
+the number of bits per macropixel, with plane i'th storing i'th bit from all
+macropixels.
+
+Planes are interleaved in memory. The interleave factor, defined as the
+distance in bytes between the beginning of two consecutive interleaved blocks
+belonging to different planes, is stored in the fixed screen information
+type_aux field.
+
+- FB_TYPE_FOURCC
+
+Macropixels are stored in memory as described by the format FOURCC identifier
+stored in the variable screen information grayscale field.
+
+- FB_VISUAL_MONO01
+
+Pixels are black or white and stored on a number of bits (typically one)
+specified by the variable screen information bpp field.
+
+Black pixels are represented by all bits set to 1 and white pixels by all bits
+set to 0. When the number of bits per pixel is smaller than 8, several pixels
+are packed together in a byte.
+
+FB_VISUAL_MONO01 is currently used with FB_TYPE_PACKED_PIXELS only.
+
+- FB_VISUAL_MONO10
+
+Pixels are black or white and stored on a number of bits (typically one)
+specified by the variable screen information bpp field.
+
+Black pixels are represented by all bits set to 0 and white pixels by all bits
+set to 1. When the number of bits per pixel is smaller than 8, several pixels
+are packed together in a byte.
+
+FB_VISUAL_MONO01 is currently used with FB_TYPE_PACKED_PIXELS only.
+
+- FB_VISUAL_TRUECOLOR
+
+Pixels are broken into red, green and blue components, and each component
+indexes a read-only lookup table for the corresponding value. Lookup tables
+are device-dependent, and provide linear or non-linear ramps.
+
+Each component is stored in a macropixel according to the variable sc
