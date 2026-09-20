@@ -11,7 +11,7 @@ jobs:
           - beyondxks
         mode:
           - ksun
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Import kernel source
@@ -25,8 +25,8 @@ jobs:
           libncurses5-dev libncurses-dev cpio zip unzip \
           python3 curl rsync kmod libelf-dev \
           lz4 tar openssl python3-pip \
-          gcc clang
-        wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb && sudo dpkg -i libtinfo5_6.3-2ubuntu0.1_amd64.deb   
+          gcc clang libtinfo5
+#        wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb && sudo dpkg -i libtinfo5_6.3-2ubuntu0.1_amd64.deb   
 
     - name: Setting permission
       run: |    
