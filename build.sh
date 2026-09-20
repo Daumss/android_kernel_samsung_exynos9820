@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Compiling Setting
-export DEVICE=$1
-export MODE=$2
+export DEVICE=beyondxks
+export MODE=y
 export ANDROID_BUILD_TOP=$(pwd)
 export AIK_DIR=${ANDROID_BUILD_TOP}/prebuilts/AIK
 export OUT_DIR=${ANDROID_BUILD_TOP}/out
@@ -14,69 +14,9 @@ fi
 
 # Define specific variables
 case ${DEVICE} in
-beyond0lte)
-    BOARD=SRPRI28A016KU
-    SOC=exynos9820
-    TZDEV=new
-;;
-beyond0lteks)
-    BOARD=SRPRI28C007KU
-    SOC=exynos9820
-    TZDEV=new
-;;
-beyond1lte)
-    BOARD=SRPRI28B016KU
-    SOC=exynos9820
-    TZDEV=new
-;;
-beyond1lteks)
-    BOARD=SRPRI28D007KU
-    SOC=exynos9820
-    TZDEV=new
-;;
-beyond2lte)
-    BOARD=SRPRI17C016KU
-    SOC=exynos9820
-    TZDEV=new
-;;
-beyond2lteks)
-    BOARD=SRPRI28E007KU
-    SOC=exynos9820
-    TZDEV=new
-;;
-beyondx)
-    BOARD=SRPSC04B014KU
-    SOC=exynos9820
-    TZDEV=new
-;;
 beyondxks)
     BOARD=SRPRK21D006KU
     SOC=exynos9820
-    TZDEV=new
-;;
-d1)
-    BOARD=SRPSD26B009KU
-    SOC=exynos9825
-    TZDEV=old
-;;
-d1xks)
-    BOARD=SRPSD23A002KU
-    SOC=exynos9825
-    TZDEV=new
-;;
-d2s)
-    BOARD=SRPSC14B009KU
-    SOC=exynos9825
-    TZDEV=old
-;;
-d2x)
-    BOARD=SRPSC14C009KU
-    SOC=exynos9825
-    TZDEV=old
-;;
-d2xks)
-    BOARD=SRPSD23C002KU
-    SOC=exynos9825
     TZDEV=new
 ;;
 *)
@@ -109,7 +49,7 @@ tar -xf "$TOOLCHAIN_FILE" && rm "$TOOLCHAIN_FILE"
 # Cooking Kernel Source
 MAKE_ARGS="
 ARCH=arm64 \
--j16 \
+-j4 \
 O=out
 "
 
@@ -148,4 +88,4 @@ cp ${ANDROID_BUILD_TOP}/prebuilts/vbmeta/${DEVICE}.img ${ANDROID_BUILD_TOP}/preb
 
 # Cooking flashable tar file
 cd ${ANDROID_BUILD_TOP}/prebuilts
-zip -r GoRhanHee_Kernel_for_${DEVICE}_${MODE}.zip META-INF boot.img dt.img dtbo.img
+zip -r Kernel_for_${DEVICE}_${MODE}.zip META-INF boot.img dt.img dtbo.img
