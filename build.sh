@@ -61,8 +61,8 @@ else
     CONFIGS="${DEFCONFIG}"    
 fi
 
-make ${MAKE_ARGS} ${CONFIGS} || exit 1
-make ${MAKE_ARGS} || exit 1
+make ${MAKE_ARGS} ${CONFIGS} > /dev/null || exit 1
+make ${MAKE_ARGS} > /dev/null || exit 1
 
 # Cooking Ramdisk
 cp ${ANDROID_BUILD_TOP}/prebuilts/ramdisk_prop/${DEVICE}.prop ${AIK_DIR}/ramdisk/system/etc/ramdisk/build.prop
