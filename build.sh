@@ -49,6 +49,7 @@ tar -xf "$TOOLCHAIN_FILE" && rm "$TOOLCHAIN_FILE"
 # Cooking Kernel Source
 MAKE_ARGS="
 ARCH=arm64 \
+CROSS_COMPILE=${ANDROID_BUILD_TOP}/toolchain/gcc-cfp/gcc-cfp-jopp-only/aarch64-linux-android-4.9/bin/aarch64-linux-android- \
 -j4 \
 O=out
 "

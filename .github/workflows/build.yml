@@ -41,4 +41,4 @@ jobs:
       with:
         name: ${{ matrix.model }}_${{ matrix.mode }}_Kernel_File
         path: |
-          prebuilts/GoRhanHee_Kernel_for_${{ matrix.model }}_${{ matrix.mode }}.zip
+          prebuilts/Kernel_for_${{ matrix.model }}_${{ matrix.mode }}.zip
